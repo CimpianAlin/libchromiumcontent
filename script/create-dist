@@ -60,6 +60,8 @@ BINARIES = {
   'darwin': [
     'chromedriver',
     'mksnapshot',
+    'libwidevinecdm.dylib',
+    'widevinecdmadapter.plugin',
     'libffmpeg.dylib',
     'libdevtools_discovery.a',
     'libdevtools_http_handler.a',
@@ -231,6 +233,7 @@ INCLUDE_DIRS = [
   'components/security_state',
   'components/update_client',
   'components/url_matcher',
+  'components/version_info',
   'content/browser',
   'content/common',
   'content/public',
