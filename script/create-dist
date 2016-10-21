@@ -75,7 +75,6 @@ BINARIES = {
     'libsecurity_state.a',
     'libcookie_config.a',
     'libos_crypt.a',
-    'libwidevinecdm.dylib',
     'widevinecdmadapter.plugin',
   ] + lib.brave.BINARIES['darwin'],
   'linux': [
@@ -97,7 +96,6 @@ BINARIES = {
     'libsecurity_state.a',
     'libcookie_config.a',
     'libos_crypt.a',
-    'libwidevinecdm.so',
     'libwidevinecdmadapter.so',
     os.path.join('lib', 'libffmpeg.so'),
   ] + lib.brave.BINARIES['linux'],
@@ -110,9 +108,7 @@ BINARIES = {
     'libGLESv2.dll',
     'libyuv.lib',
     'mksnapshot.exe',
-    os.path.join('WidevineCdm', '_platform_specific', 'win_x64', 'widevinecdm.dll'),
     os.path.join('WidevineCdm', '_platform_specific', 'win_x64', 'widevinecdmadapter.dll'),
-    os.path.join('WidevineCdm', '_platform_specific', 'win_ia32', 'widevinecdm.dll'),
     os.path.join('WidevineCdm', '_platform_specific', 'win_ia32', 'widevinecdmadapter.dll'),
     os.path.join('gen', 'ui', 'resources', 'ui_unscaled_resources.rc'),
     os.path.join('obj', 'base', 'base_static.cc.pdb'),
@@ -204,11 +200,9 @@ ARCH_BLACKLIST = {
   'x64': [
     'libprotobuf_full_do_not_use.a',
     'libprotoc_lib.a',
-    os.path.join('WidevineCdm', '_platform_specific', 'win_ia32', 'widevinecdm.dll'),
     os.path.join('WidevineCdm', '_platform_specific', 'win_ia32', 'widevinecdmadapter.dll'),
   ],
   'ia32': [
-    os.path.join('WidevineCdm', '_platform_specific', 'win_x64', 'widevinecdm.dll'),
     os.path.join('WidevineCdm', '_platform_specific', 'win_x64', 'widevinecdmadapter.dll'),
   ],
 }
