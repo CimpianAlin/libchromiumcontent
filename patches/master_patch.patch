@@ -120,85 +120,6 @@ index 0f8d9d8..e29ec83 100644
      return;
    }
  
-diff --git a/chrome/browser/plugins/plugin_info_message_filter.cc b/chrome/browser/plugins/plugin_info_message_filter.cc
-index ceb16a4..7a0690f 100644
---- a/chrome/browser/plugins/plugin_info_message_filter.cc
-+++ b/chrome/browser/plugins/plugin_info_message_filter.cc
-@@ -148,6 +148,7 @@ bool IsPluginLoadingAccessibleResourceInWebView(
- 
- PluginInfoMessageFilter::Context::Context(int render_process_id,
-                                           Profile* profile)
-+#if 0
-     : render_process_id_(render_process_id),
-       resource_context_(profile->GetResourceContext()),
- #if defined(ENABLE_EXTENSIONS)
-@@ -166,6 +167,9 @@ PluginInfoMessageFilter::Context::Context(int render_process_id,
-   always_authorize_plugins_.MoveToThread(
-       content::BrowserThread::GetTaskRunnerForThread(
-           content::BrowserThread::IO));
-+#else
-+{
-+#endif
- }
- 
- PluginInfoMessageFilter::Context::~Context() {
-@@ -181,8 +185,10 @@ PluginInfoMessageFilter::PluginInfoMessageFilter(int render_process_id,
- 
- bool PluginInfoMessageFilter::OnMessageReceived(const IPC::Message& message) {
-   IPC_BEGIN_MESSAGE_MAP(PluginInfoMessageFilter, message)
-+#if 0
-     IPC_MESSAGE_HANDLER_DELAY_REPLY(ChromeViewHostMsg_GetPluginInfo,
-                                     OnGetPluginInfo)
-+#endif
- #if defined(ENABLE_PEPPER_CDMS)
-     IPC_MESSAGE_HANDLER(
-         ChromeViewHostMsg_IsInternalPluginAvailableForMimeType,
-@@ -209,7 +215,7 @@ struct PluginInfoMessageFilter::GetPluginInfo_Params {
-   GURL top_origin_url;
-   std::string mime_type;
- };
--
-+#if 0
- void PluginInfoMessageFilter::OnGetPluginInfo(
-     int render_frame_id,
-     const GURL& url,
-@@ -260,7 +266,7 @@ void PluginInfoMessageFilter::PluginsLoaded(
-                        reply_msg);
-   }
- }
--
-+#endif
- #if defined(ENABLE_PEPPER_CDMS)
- 
- void PluginInfoMessageFilter::OnIsInternalPluginAvailableForMimeType(
-@@ -278,11 +284,12 @@ void PluginInfoMessageFilter::OnIsInternalPluginAvailableForMimeType(
-         plugin.mime_types;
-     for (size_t j = 0; j < mime_types.size(); ++j) {
-       if (mime_types[j].mime_type == mime_type) {
-+#if 0
-         if (!context_.IsPluginEnabled(plugin)) {
-           is_plugin_disabled = true;
-           break;
-         }
--
-+#endif
-         *is_available = true;
-         *additional_param_names = mime_types[j].additional_param_names;
-         *additional_param_values = mime_types[j].additional_param_values;
-@@ -298,7 +305,7 @@ void PluginInfoMessageFilter::OnIsInternalPluginAvailableForMimeType(
- }
- 
- #endif  // defined(ENABLE_PEPPER_CDMS)
--
-+#if 0
- void PluginInfoMessageFilter::Context::DecidePluginStatus(
-     const GetPluginInfo_Params& params,
-     const WebPluginInfo& plugin,
-@@ -502,3 +509,4 @@ bool PluginInfoMessageFilter::Context::IsPluginEnabled(
-     const content::WebPluginInfo& plugin) const {
-   return plugin_prefs_->IsPluginEnabled(plugin);
- }
-+#endif
 diff --git a/chrome/browser/printing/print_view_manager_base.cc b/chrome/browser/printing/print_view_manager_base.cc
 index 179c44c..5abd0b6 100644
 --- a/chrome/browser/printing/print_view_manager_base.cc
@@ -492,6 +413,32 @@ index 2b42f45..c8d6c51 100644
      }
    }
  
+diff --git a/chrome/chrome_renderer.gypi b/chrome/chrome_renderer.gypi
+index 1b03a2b..3e55db9 100644
+--- a/chrome/chrome_renderer.gypi
++++ b/chrome/chrome_renderer.gypi
+@@ -19,8 +19,8 @@
+       'renderer/chrome_render_thread_observer.h',
+       'renderer/chrome_render_view_observer.cc',
+       'renderer/chrome_render_view_observer.h',
+-      'renderer/content_settings_observer.cc',
+-      'renderer/content_settings_observer.h',
++      # 'renderer/content_settings_observer.cc',
++      # 'renderer/content_settings_observer.h',
+       'renderer/custom_menu_commands.h',
+       'renderer/instant_restricted_id_cache.h',
+       'renderer/loadtimes_extension_bindings.cc',
+@@ -81,8 +81,8 @@
+       'renderer/extensions/app_bindings.h',
+       'renderer/extensions/automation_internal_custom_bindings.cc',
+       'renderer/extensions/automation_internal_custom_bindings.h',
+-      'renderer/extensions/chrome_extensions_dispatcher_delegate.cc',
+-      'renderer/extensions/chrome_extensions_dispatcher_delegate.h',
++      # 'renderer/extensions/chrome_extensions_dispatcher_delegate.cc',
++      # 'renderer/extensions/chrome_extensions_dispatcher_delegate.h',
+       'renderer/extensions/chrome_extensions_renderer_client.cc',
+       'renderer/extensions/chrome_extensions_renderer_client.h',
+       'renderer/extensions/chrome_v8_extension_handler.cc',
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
 index 4653292..34aee93 100644
 --- a/chrome/common/BUILD.gn
@@ -1298,6 +1245,19 @@ index 77ce72f..c8c80e5 100644
        id selected_text = [native_focus_object selectedTextMarkerRange];
        if (selected_text) {
          [user_info setObject:selected_text
+diff --git a/content/browser/frame_host/render_frame_message_filter.cc b/content/browser/frame_host/render_frame_message_filter.cc
+index 07dc9d5..f3938d2 100644
+--- a/content/browser/frame_host/render_frame_message_filter.cc
++++ b/content/browser/frame_host/render_frame_message_filter.cc
+@@ -481,7 +481,7 @@ void RenderFrameMessageFilter::GetPluginsCallback(
+   PluginServiceFilter* filter = PluginServiceImpl::GetInstance()->GetFilter();
+   std::vector<WebPluginInfo> plugins;
+ 
+-  int child_process_id = -1;
++  int child_process_id = render_process_id_;
+   int routing_id = MSG_ROUTING_NONE;
+   // In this loop, copy the WebPluginInfo (and do not use a reference) because
+   // the filter might mutate it.
 diff --git a/content/browser/renderer_host/input/synthetic_gesture_target_mac.mm b/content/browser/renderer_host/input/synthetic_gesture_target_mac.mm
 index 92d3617..6004636 100644
 --- a/content/browser/renderer_host/input/synthetic_gesture_target_mac.mm
