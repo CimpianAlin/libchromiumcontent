@@ -109,7 +109,7 @@ BINARIES = {
     'libyuv.lib',
     'mksnapshot.exe',
     os.path.join('WidevineCdm', '_platform_specific', 'win_x64', 'widevinecdmadapter.dll'),
-    os.path.join('WidevineCdm', '_platform_specific', 'win_ia32', 'widevinecdmadapter.dll'),
+    os.path.join('WidevineCdm', '_platform_specific', 'win_x86', 'widevinecdmadapter.dll'),
     os.path.join('gen', 'ui', 'resources', 'ui_unscaled_resources.rc'),
     os.path.join('obj', 'base', 'base_static.cc.pdb'),
     os.path.join('obj', 'base', 'base_static.lib'),
@@ -200,7 +200,7 @@ ARCH_BLACKLIST = {
   'x64': [
     'libprotobuf_full_do_not_use.a',
     'libprotoc_lib.a',
-    os.path.join('WidevineCdm', '_platform_specific', 'win_ia32', 'widevinecdmadapter.dll'),
+    os.path.join('WidevineCdm', '_platform_specific', 'win_x86', 'widevinecdmadapter.dll'),
   ],
   'ia32': [
     os.path.join('WidevineCdm', '_platform_specific', 'win_x64', 'widevinecdmadapter.dll'),
